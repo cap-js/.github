@@ -9,14 +9,20 @@ on:
       dry-run:
         description: Dry run
         required: false
-        default: false
         type: boolean
+        default: false
+      tag:
+        description: The tag to use during publish, values are latest, next
+        required: false
+        type: string
+        default: latest
 
 permissions:
   contents: write
 
 env:
   INPUTS_DRY_RUN: ${{ github.event.inputs.dry-run }}
+  INPUTS_TAG: ${{ github.event.inputs.tag }}
   DRY_RUN_OPTION: ${{ github.event.inputs.dry-run == 'true' && '--dry-run' || '' }}
 
 
@@ -79,7 +85,7 @@ jobs:
           npm run test
 
       - name: Publish to npm
-        run: npm publish --access public $DRY_RUN_OPTION
+        run: npm publish --tag $INPUTS_TAG --access public $DRY_RUN_OPTION
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
