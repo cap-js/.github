@@ -6,7 +6,7 @@ name: Enforce Changelog
 #  pull_request:
 #    types: [opened, synchronize, reopened, ready_for_review, labeled, unlabeled]
 # jobs:
-#   enforece-changelog:
+#   enforce-changelog:
 #     uses: cap-js/.github/.github/workflows/enforce-changelog.yml@main
 #     secrets: inherit
 #     permissions:
