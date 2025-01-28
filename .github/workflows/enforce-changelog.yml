@@ -9,6 +9,8 @@ name: Enforce Changelog
 #   enforece-changelog:
 #     uses: cap-js/.github/.github/workflows/enforce-changelog.yml@main
 #     secrets: inherit
+#     permissions:
+#       pull-requests: write
 
 
 
@@ -17,7 +19,7 @@ on:
   workflow_call:
 
 jobs:
-  label_dependabot:
+  label-dependabot:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -43,6 +45,7 @@ jobs:
               core.info(`PR #${prNumber} is not authored by Dependabot. No action taken.`);
             }
   changelog:
+    needs: label-dependabot
     runs-on: ubuntu-latest
     steps:
     - uses: dangoslen/changelog-enforcer@v3
