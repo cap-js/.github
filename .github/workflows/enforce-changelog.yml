@@ -1,7 +1,10 @@
 name: Enforce Changelog
 
-# usage
-#
+# usage in your project
+# + create file enforce-changelog.yml in .github/workflows
+# + add the following content to enforce-changelog.yml
+
+# name: Enforce Changelog
 # on:
 #  pull_request:
 #    types: [opened, synchronize, reopened, ready_for_review, labeled, unlabeled]
@@ -11,7 +14,6 @@ name: Enforce Changelog
 #     secrets: inherit
 #     permissions:
 #       pull-requests: write
-
 
 
 
