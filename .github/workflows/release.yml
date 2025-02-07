@@ -21,9 +21,9 @@ permissions:
   contents: write
 
 env:
-  INPUTS_DRY_RUN: ${{ github.event.inputs.dry-run }}
-  INPUTS_TAG: ${{ github.event.inputs.tag }}
-  DRY_RUN_OPTION: ${{ github.event.inputs.dry-run == 'true' && '--dry-run' || '' }}
+  INPUTS_DRY_RUN: ${{ inputs.dry-run }}
+  INPUTS_TAG: ${{ inputs.tag }}
+  DRY_RUN_OPTION: ${{ inputs.dry-run == 'true' && '--dry-run' || '' }}
 
 
 jobs:
@@ -79,7 +79,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
 
       - name: Run Unit Tests
-        if: ${{ github.event.inputs.dry-run != 'true' }}
+        if: ${{ inputs.dry-run != 'true' }}
         run: |
           npm ci
           npm run test
@@ -102,7 +102,7 @@ jobs:
           title-regex: '^##\s+\[\d.*$'
 
       - name: Create a GitHub release
-        if: ${{ github.event.inputs.dry-run != 'true' }}
+        if: ${{ inputs.dry-run != 'true' }}
         uses: ncipollo/release-action@v1
         with:
           tag: 'v${{ steps.get-version.outputs.version }}'
