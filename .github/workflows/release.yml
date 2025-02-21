@@ -23,7 +23,7 @@ permissions:
 env:
   INPUTS_DRY_RUN: ${{ inputs.dry-run }}
   INPUTS_TAG: ${{ inputs.tag }}
-  DRY_RUN_OPTION: ${{ inputs.dry-run == 'true' || '' }}
+  DRY_RUN_OPTION: ${{ inputs.dry-run == 'true' && '--dry-run' || '' }}
 
 
 jobs:
@@ -85,7 +85,7 @@ jobs:
           npm run test
 
       - name: Publish to npm
-        run: npm publish --tag $INPUTS_TAG --access public $DRY_RUN_OPTION
+        run: npm publish --tag $INPUTS_TAG --access public $INPUTS_DRY_RUN
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
