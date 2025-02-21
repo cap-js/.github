@@ -23,7 +23,7 @@ permissions:
 env:
   INPUTS_DRY_RUN: ${{ inputs.dry-run }}
   INPUTS_TAG: ${{ inputs.tag }}
-  DRY_RUN_OPTION: ${{ inputs.dry-run == 'true' && '--dry-run' || '' }}
+  DRY_RUN_OPTION: ${{ inputs.dry-run == 'true' || '' }}
 
 
 jobs:
