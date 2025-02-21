@@ -19,6 +19,7 @@ on:
 
 permissions:
   contents: write
+  id-token: write
 
 env:
   INPUTS_DRY_RUN: ${{ inputs.dry-run }}
@@ -83,7 +84,7 @@ jobs:
           npm run test
 
       - name: Publish to npm
-        run: npm publish --tag $INPUTS_TAG --access public --dry-run $INPUTS_DRY_RUN
+        run: npm publish --tag $INPUTS_TAG --access public --provenance --dry-run $INPUTS_DRY_RUN
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
