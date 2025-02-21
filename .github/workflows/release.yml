@@ -23,7 +23,6 @@ permissions:
 env:
   INPUTS_DRY_RUN: ${{ inputs.dry-run }}
   INPUTS_TAG: ${{ inputs.tag }}
-  DRY_RUN_OPTION: ${{ inputs.dry-run == 'true' && '--dry-run' || '' }}
 
 
 jobs:
@@ -79,13 +78,12 @@ jobs:
           registry-url: https://registry.npmjs.org/
 
       - name: Run Unit Tests
-        if: ${{ inputs.dry-run != 'true' }}
         run: |
           npm ci
           npm run test
 
       - name: Publish to npm
-        run: npm publish --tag $INPUTS_TAG --access public $DRY_RUN_OPTION
+        run: npm publish --tag $INPUTS_TAG --access public --dry-run $INPUTS_DRY_RUN
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
@@ -102,7 +100,7 @@ jobs:
           title-regex: '^##\s+\[\d.*$'
 
       - name: Create a GitHub release
-        if: ${{ inputs.dry-run != 'true' }}
+        if: ${{ !inputs.dry-run }}
         uses: ncipollo/release-action@v1
         with:
           tag: 'v${{ steps.get-version.outputs.version }}'
