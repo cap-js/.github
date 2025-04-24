@@ -1,0 +1,44 @@
+name: Cloud Foundry Setup
+description: "Installs the CF CLI and MBT"
+
+inputs:
+  cf-version:
+    description: "The version of the Cloud Foundry CLI to install"
+    required: false
+    default: "8.8.3"
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: |
+        set -e
+        CF_VERSION="${{ inputs.cf-version }}"
+        echo "Using CF_VERSION=$CF_VERSION"
+        echo "Using CF_API=$CF_API"
+
+    - shell: bash
+      run: |
+        CF_VERSION="${{ inputs.cf-version }}"
+        echo "Installing CF CLI $CF_VERSION..."
+        curl -L "https://packages.cloudfoundry.org/stable?release=linux64-binary&version=${CF_VERSION}&source=github" -o cf-cli.tgz
+        mkdir cf-cli && tar -xzf cf-cli.tgz -C cf-cli
+        chmod +x cf-cli/cf
+        sudo mv cf-cli/cf /usr/local/bin/cf
+
+    - shell: bash
+      run: |
+        echo "Installing MBT..."
+        npm install -g mbt
+
+    - shell: bash
+      run: |
+        echo "Installing CF CLI multiapps plugin..."
+        cf install-plugin multiapps -f
+
+    - shell: bash
+      run: |
+        echo "Authenticating to Cloud Foundry..."
+        cf api "$CF_API"
+        echo "$CF_PASSWORD" | cf auth "$CF_USERNAME"
+        cf target -o "$CF_ORG" -s "$CF_SPACE"
