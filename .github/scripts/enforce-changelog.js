@@ -1,6 +1,5 @@
-const core = require('@actions/core');
 
-async function run({ github, context }) {
+async function run({ core, github, context }) {
   const LABEL_NAME = 'skip changelog';
   const labels = context.payload.pull_request.labels || [];
   if (labels.some(label => label.name === LABEL_NAME)) {
