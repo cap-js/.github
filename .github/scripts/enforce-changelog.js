@@ -1,5 +1,7 @@
+// Libs context, core, github are provided by the GitHub Actions environment
+// during the workflow execution.
 
-async function run({ core, github, context }) {
+async function run({ context, core, github }) {
   const LABEL_NAME = 'skip changelog';
   const labels = context.payload.pull_request.labels || [];
   if (labels.some(label => label.name === LABEL_NAME)) {
@@ -26,9 +28,9 @@ async function run({ core, github, context }) {
 
   // no paging since we only check the first 200 files
   const { data: files } = await github.rest.pulls.listFiles({
-    owner: context.repo.owner,
-    repo: context.repo.repo,
-    pull_number: context.payload.pull_request.number,
+    owner: repoOwner,
+    repo: repoName,
+    pull_number: prNumber,
     per_page: 200
   });
 

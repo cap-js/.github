@@ -32,14 +32,9 @@ jobs:
         with:
           fetch-depth: 1
 
-      - run: |
-          pwd
-          ls -la
-
       - name: Enforce Changelog
         uses: actions/github-script@v7
         with:
           script: |
-            console.log(process.cwd());
             const run = require('./.github/scripts/enforce-changelog.js');
-            await run({ core, github, context });
+            await run({ context, core, github });
