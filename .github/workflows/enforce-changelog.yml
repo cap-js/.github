@@ -41,5 +41,5 @@ jobs:
         with:
           script: |
             console.log(process.cwd());
-            const run = require('./scripts/enforce-changelog.js');
+            const run = require('./.github/scripts/enforce-changelog.js');
             await run({ github, context });
