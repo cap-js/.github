@@ -24,7 +24,7 @@ on:
 
 jobs:
   check-changelog:
-    runs-on: [self-hosted, solinas-medium]
+    runs-on: ubuntu-latest
     permissions:
       pull-requests: write
     steps:
