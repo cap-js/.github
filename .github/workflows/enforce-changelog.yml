@@ -32,6 +32,9 @@ jobs:
         with:
           fetch-depth: 1
 
+      - run: |
+          ls -la
+
       - name: Enforce Changelog
         uses: actions/github-script@v7
         with:
