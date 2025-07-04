@@ -32,7 +32,8 @@ jobs:
         with:
           fetch-depth: 1
           repository: cap-js/.github
-          ref: add/simplerChLogTest
+          ref: add/simplerChLogTest # must be changed to main before merging
+          # ref: main
           path: ./cap-js-github
 
       - name: Enforce Changelog
