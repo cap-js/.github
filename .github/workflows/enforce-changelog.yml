@@ -33,11 +33,11 @@ jobs:
           fetch-depth: 1
           repository: cap-js/.github
           ref: add/simplerChLogTest
-          path: ./.github
+          path: ./cap-js-github
 
       - name: Enforce Changelog
         uses: actions/github-script@v7
         with:
           script: |
-            const run = require('./.github/.github/scripts/enforce-changelog.js');
+            const run = require('./cap-js-github/.github/scripts/enforce-changelog.js');
             await run({ context, core, github });
