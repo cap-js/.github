@@ -34,11 +34,11 @@ jobs:
           repository: cap-js/.github
           ref: add/simplerChLogTest # must be changed to main before merging
           # ref: main
-          path: ${{ runner.temp }}/cap-js-github
+          path: ./cap-js-github
 
       - name: Enforce Changelog
         uses: actions/github-script@v7
         with:
           script: |
-            const run = require(`${process.env.RUNNER_TEMP}/cap-js-github/.github/scripts/enforce-changelog.js`);
+            const run = require('./cap-js-github/.github/scripts/enforce-changelog.js');
             await run({ context, core, github });
