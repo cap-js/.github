@@ -7,7 +7,7 @@ description: Validates the current changelog.md for additions in case of a conve
 # name: Pull Request Checks
 # on:
 #   pull_request:
-#     types: [opened, synchronize, reopened, edited, labeled, unlabeled, ready_for_review, review_requested, review_request_removed, auto_merge_enabled, auto_merge_disabled]
+#     types: [edited, synchronize] # relevant triggers for title change, file modifications
 # jobs:
 #   check-changelog:
 #     runs-on: [self-hosted, solinas]
