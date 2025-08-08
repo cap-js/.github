@@ -1,0 +1,61 @@
+name: Check Changelog
+
+description: Validates the current changelog.md for additions in case of a conventional commit PR.
+
+# Usage
+
+# name: Pull Request Checks
+# on:
+#   pull_request:
+#     types: [opened, synchronize, reopened, edited, labeled, unlabeled, ready_for_review, review_requested, review_request_removed, auto_merge_enabled, auto_merge_disabled]
+# jobs:
+#   check-changelog:
+#     runs-on: [self-hosted, solinas]
+#     steps:
+#       - name: Check changelog
+#         uses: cap-js/.github/.github/actions/check-changelog@main
+
+
+# plain reg ex
+# /^(fix|feat)(\([^)]+\))?!?:/i
+# matches fix:, fix(abc):, feat!: and feat(abc)!:, ...
+# to add new commit types, just add them to the convCommitTypes array below
+
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/github-script@v7
+      with:
+        script: |
+          if (!context.payload.pull_request) {
+            core.warning('Cannot perform check. Workflow must be called from a pull request.');
+            return;
+          }
+
+          const convCommitTypes = ['fix', 'feat'];
+          const convCommitTypesList = convCommitTypes.join('|');
+          const checkFilename = 'CHANGELOG.md';
+
+          const convCommitTypesRegex = new RegExp(`^(${convCommitTypesList})(\\([^)]+\\))?!?:`, 'i');
+          const prTitle = context.payload.pull_request.title;
+          if (!convCommitTypesRegex.test(prTitle)) {
+            core.warning(`PR title '${prTitle}' does not start with (${convCommitTypesList}). Skipping check.`);
+            return;
+          }
+
+          // no paging since we only check the first 200 files
+          // PRs with more than 200 files do not make sense anyway
+          const { data: files } = await github.rest.pulls.listFiles({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: context.payload.pull_request.number,
+            per_page: 200
+          });
+
+          core.info('File(s) in PR: \n' + files.map(f => f.filename).join('\n'));
+          if (!files.some(f => f.filename?.endsWith(checkFilename))) {
+            core.setFailed(`File '${checkFilename}' not updated in this PR although PR '${prTitle}' title starts with one of (${convCommitTypesList}). If this is intentional, please choose a different PR title that does not start with (${convCommitTypesList}).`);
+          } else {
+            core.info(`✅ File '${checkFilename}' found in PR.`);
+          }
