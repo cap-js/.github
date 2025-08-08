@@ -5,9 +5,11 @@ description: Validates the current changelog.md for additions in case of a conve
 # Usage
 
 # name: Pull Request Checks
+# permissions:
+#   contents: read
 # on:
 #   pull_request:
-#     types: [edited, synchronize] # relevant triggers for title change, file modifications
+#     types: [edited, opened, synchronize] # relevant triggers for title change, file modifications
 # jobs:
 #   check-changelog:
 #     runs-on: [self-hosted, solinas]
