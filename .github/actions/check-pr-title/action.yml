@@ -34,7 +34,7 @@ runs:
 
         regex="^(feat|fix|docs|style|refactor|perf|test|chore|build|ci|revert|merge)(\([^)]+\))?!?: .+"
         if [[ ! "$PR_TITLE" =~ $regex ]]; then
-          echo "PR title '${PR_TITLE}' does not follow Conventional Commits format. See ${CONV_COMMITS_REF} for more details."
+          echo "❌ PR title '${PR_TITLE}' does not follow Conventional Commits format. See ${CONV_COMMITS_REF} for more details."
           exit 1
         else
           echo "✅ PR title '${PR_TITLE}' is valid."
