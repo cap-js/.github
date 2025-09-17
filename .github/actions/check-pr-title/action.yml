@@ -1,0 +1,41 @@
+name: Check PR Title
+
+description: Validates the title of a pull request to ensure it starts with a conventional commit type.
+
+# see https://www.conventionalcommits.org/en/v1.0.0/
+
+# Usage
+
+# name: Pull Request Checks
+# on:
+#   pull_request:
+#     types: [opened, synchronize, reopened, edited, labeled, unlabeled, ready_for_review, review_requested, review_request_removed, auto_merge_enabled, auto_merge_disabled]
+# jobs:
+#   check-pr-title:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Check PR title
+#         uses: cap-js/.github/.github/actions/check-pr-title@main
+
+
+runs:
+  using: composite
+  steps:
+    - id: check-pr-title
+      shell: bash
+      env:
+        PR_TITLE: ${{ github.event.pull_request.title }}
+        CONV_COMMITS_REF: https://www.conventionalcommits.org/en/v1.0.0/
+      run: |
+        if [ -z "$PR_TITLE" ]; then
+          echo "⚠️ Cannot perform check. Workflow must be called from a pull request."
+          exit 0
+        fi
+
+        regex="^(feat|fix|docs|style|refactor|perf|test|chore|build|ci|revert|merge)(\([^)]+\))?!?: .+"
+        if [[ ! "$PR_TITLE" =~ $regex ]]; then
+          echo "❌ PR title '${PR_TITLE}' does not follow Conventional Commits format. See ${CONV_COMMITS_REF} for more details."
+          exit 1
+        else
+          echo "✅ PR title '${PR_TITLE}' is valid."
+        fi
