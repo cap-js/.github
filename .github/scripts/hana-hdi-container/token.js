@@ -1,7 +1,7 @@
 import { URLSearchParams } from 'url'
 
 const fetch_token = async () => {
-  const url = 'https://cdx-stakeholder-tests.authentication.eu10.hana.ondemand.com/oauth/token'
+  const url = process.env.INPUT_AUTH_URL
 
   const encodedParams = new URLSearchParams()
   encodedParams.set('grant_type', 'client_credentials')

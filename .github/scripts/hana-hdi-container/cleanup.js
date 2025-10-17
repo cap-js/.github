@@ -3,12 +3,12 @@ import { fetch_token } from './token.js'
 const token = await fetch_token()
 const headers = { authorization: `Bearer ${token}`, 'content-type': 'application/json' }
 
-const url = 'https://service-manager.cfapps.eu10.hana.ondemand.com'
+const url = process.env.INPUT_SERVICE_MANAGER_URL
 
-const contains = 'telemetry'
-const AGE = 1000 * 60 * 60 * 1 // 1 hour
+const AGE = 1000 * 60 * 60 * (parseInt(process.env.INPUT_CLEANUP_AGE_HOURS) || 1)
 
-const b_url = url + `/v1/service_bindings?fieldQuery=name contains '${contains}'`
+const contains = process.env.INPUT_CLEANUP_FILTER
+const b_url = url + `/v1/service_bindings${ contains ? `?fieldQuery=name contains '${contains}'` : ''}`
 const b_res = await fetch(b_url, { method: 'GET', headers })
 let { items: bindings } = await b_res.json()
 bindings = bindings.filter(b => Date.now() - new Date(b.created_at) > AGE)

@@ -1,11 +1,48 @@
 name: "HANA HDI Container Management"
 description: "Manages HANA HDI containers by cleaning up old instances and setting up new ones"
+inputs:
+  instance-prefix:
+    description: "Prefix for service instance names"
+    required: false
+    default: "ci"
+  cleanup-filter:
+    description: "Filter string for cleanup (instances containing this string will be cleaned)"
+    required: false
+    default: ""
+  cleanup-age-hours:
+    description: "Age threshold in hours for cleanup"
+    required: false
+    default: "1"
+  config-path:
+    description: "Path where to write configuration files"
+    required: false
+    default: ""
+  service-plan-id:
+    description: "HANA service plan ID" 
+    required: true
+  auth-url:
+    description: "OAuth authentication URL"
+    required: true
+  service-manager-url:
+    description: "Service Manager URL"
+    required: true
 runs:
   using: "composite"
   steps:
     - name: Cleanup old instances
       run: node ${{ github.action_path }}/../../scripts/hana-hdi-container/cleanup.js
       shell: bash
+      env:
+        INPUT_CLEANUP_FILTER: ${{ inputs.cleanup-filter }}
+        INPUT_CLEANUP_AGE_HOURS: ${{ inputs.cleanup-age-hours }}
+        INPUT_SERVICE_MANAGER_URL: ${{ inputs.service-manager-url }}
+        INPUT_AUTH_URL: ${{ inputs.auth-url }}
     - name: Setup new instance
       run: node ${{ github.action_path }}/../../scripts/hana-hdi-container/setup.js
       shell: bash
+      env:
+        INPUT_INSTANCE_PREFIX: ${{ inputs.instance-prefix }}
+        INPUT_CONFIG_PATH: ${{ inputs.config-path }}
+        INPUT_SERVICE_PLAN_ID: ${{ inputs.service-plan-id }}
+        INPUT_SERVICE_MANAGER_URL: ${{ inputs.service-manager-url }}
+        INPUT_AUTH_URL: ${{ inputs.auth-url }}

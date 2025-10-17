@@ -9,16 +9,18 @@ import { fetch_token } from './token.js'
 const token = await fetch_token()
 const headers = { authorization: `Bearer ${token}`, 'content-type': 'application/json' }
 
-const url = 'https://service-manager.cfapps.eu10.hana.ondemand.com'
+const url = process.env.INPUT_SERVICE_MANAGER_URL
 
 const i_url = url + '/v1/service_instances'
-const i_name = `telemetry_ci_${Math.random().toString(36).substring(2, 15)}`
+const instancePrefix = process.env.INPUT_INSTANCE_PREFIX || 'ci'
+const i_name = `${instancePrefix}_ci_${Math.random().toString(36).substring(2, 15)}`
+const servicePlanId = process.env.INPUT_SERVICE_PLAN_ID
 const i_options = {
   method: 'POST',
   headers,
   body: JSON.stringify({
     name: i_name,
-    service_plan_id: 'fa787a6e-4e35-461a-ac5d-4189a2cf8084'
+    service_plan_id: servicePlanId
   })
 }
 const i_res = await fetch(i_url, i_options)
@@ -56,8 +58,9 @@ for (let i = 0; i < 60; i++) {
 const res = await fetch(b_url + '/' + service_binding_id, { method: 'GET', headers })
 const { credentials } = await res.json()
 
-const cdsrc = path_join(process.cwd(), 'test', 'bookshop', '.cdsrc.json')
+const configPath = process.env.INPUT_CONFIG_PATH || ''
+const cdsrc = path_join(process.cwd(), configPath, '.cdsrc.json')
 writeFileSync(cdsrc, JSON.stringify({ requires: { db: { kind: 'hana', credentials } } }, null, 2))
 
-const vcap = path_join(process.cwd(), 'test', 'bookshop', 'vcap.json')
+const vcap = path_join(process.cwd(), configPath, 'vcap.json')
 writeFileSync(vcap, JSON.stringify({ VCAP_SERVICES: { hana: [{ tags: ['hana'], credentials }] } }, null, 2))
