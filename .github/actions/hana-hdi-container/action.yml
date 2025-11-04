@@ -7,11 +7,17 @@ inputs:
   service-plan-id:
     description: "HANA service plan ID" 
     required: true
-  auth-url:
-    description: "OAuth authentication URL"
-    required: true
   service-manager-url:
     description: "Service Manager URL"
+    required: true
+  service-manager-auth-url:
+    description: "OAuth authentication URL"
+    required: true
+  service-manager-client-id:
+    description: "OAuth client ID"
+    required: true
+  service-manager-client-secret:
+    description: "OAuth client secret"
     required: true
   cleanup-age-hours:
     description: "Age threshold in hours for cleanup"
@@ -28,16 +34,21 @@ runs:
       run: node ${{ github.action_path }}/../../scripts/hana-hdi-container/cleanup.js
       shell: bash
       env:
-        INPUT_AUTH_URL: ${{ inputs.auth-url }}
-        INPUT_SERVICE_MANAGER_URL: ${{ inputs.service-manager-url }}
-        INPUT_CLEANUP_AGE_HOURS: ${{ inputs.cleanup-age-hours }}
         INPUT_INSTANCE_PREFIX: ${{ inputs.instance-prefix }}
+        INPUT_SERVICE_PLAN_ID: ${{ inputs.service-plan-id }}
+        INPUT_SERVICE_MANAGER_URL: ${{ inputs.service-manager-url }}
+        INPUT_SERVICE_MANAGER_AUTH_URL: ${{ inputs.service-manager-auth-url }}
+        INPUT_SERVICE_MANAGER_CLIENT_ID: ${{ inputs.service-manager-client-id }}
+        INPUT_SERVICE_MANAGER_CLIENT_SECRET: ${{ inputs.service-manager-client-secret }}
+        INPUT_CLEANUP_AGE_HOURS: ${{ inputs.cleanup-age-hours }}
     - name: Setup new instance
       run: node ${{ github.action_path }}/../../scripts/hana-hdi-container/setup.js
       shell: bash
       env:
-        INPUT_AUTH_URL: ${{ inputs.auth-url }}
-        INPUT_SERVICE_MANAGER_URL: ${{ inputs.service-manager-url }}
         INPUT_INSTANCE_PREFIX: ${{ inputs.instance-prefix }}
         INPUT_SERVICE_PLAN_ID: ${{ inputs.service-plan-id }}
+        INPUT_SERVICE_MANAGER_URL: ${{ inputs.service-manager-url }}
+        INPUT_SERVICE_MANAGER_AUTH_URL: ${{ inputs.service-manager-auth-url }}
+        INPUT_SERVICE_MANAGER_CLIENT_ID: ${{ inputs.service-manager-client-id }}
+        INPUT_SERVICE_MANAGER_CLIENT_SECRET: ${{ inputs.service-manager-client-secret }}
         INPUT_CONFIG_PATH: ${{ inputs.config-path }}
