@@ -4,8 +4,8 @@ inputs:
   instance-prefix:
     description: "Prefix for service instance names"
     required: true
-  service-plan-id:
-    description: "HANA service plan ID" 
+  hana-plan-id:
+    description: "HANA service plan ID"
     required: true
   service-manager-url:
     description: "Service Manager URL"
@@ -35,7 +35,7 @@ runs:
       shell: bash
       env:
         INPUT_INSTANCE_PREFIX: ${{ inputs.instance-prefix }}
-        INPUT_SERVICE_PLAN_ID: ${{ inputs.service-plan-id }}
+        INPUT_HANA_PLAN_ID: ${{ inputs.hana-plan-id }}
         INPUT_SERVICE_MANAGER_URL: ${{ inputs.service-manager-url }}
         INPUT_SERVICE_MANAGER_AUTH_URL: ${{ inputs.service-manager-auth-url }}
         INPUT_SERVICE_MANAGER_CLIENT_ID: ${{ inputs.service-manager-client-id }}
@@ -46,7 +46,7 @@ runs:
       shell: bash
       env:
         INPUT_INSTANCE_PREFIX: ${{ inputs.instance-prefix }}
-        INPUT_SERVICE_PLAN_ID: ${{ inputs.service-plan-id }}
+        INPUT_HANA_PLAN_ID: ${{ inputs.hana-plan-id }}
         INPUT_SERVICE_MANAGER_URL: ${{ inputs.service-manager-url }}
         INPUT_SERVICE_MANAGER_AUTH_URL: ${{ inputs.service-manager-auth-url }}
         INPUT_SERVICE_MANAGER_CLIENT_ID: ${{ inputs.service-manager-client-id }}

@@ -14,7 +14,7 @@ const url = process.env.INPUT_SERVICE_MANAGER_URL
 const i_url = url + '/v1/service_instances'
 const prefix = process.env.INPUT_INSTANCE_PREFIX + '_ci_'
 const i_name = `${prefix}${Math.random().toString(36).substring(2, 15)}`
-const servicePlanId = process.env.INPUT_SERVICE_PLAN_ID
+const servicePlanId = process.env.INPUT_HANA_PLAN_ID
 const i_options = {
   method: 'POST',
   headers,
