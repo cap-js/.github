@@ -3,12 +3,7 @@ description: "Manages HANA HDI containers by cleaning up old instances and setti
 inputs:
   instance-prefix:
     description: "Prefix for service instance names"
-    required: false
-    default: "ci"
-  cleanup-filter:
-    description: "Filter string for cleanup (instances containing this string will be cleaned)"
-    required: false
-    default: ""
+    required: true
   cleanup-age-hours:
     description: "Age threshold in hours for cleanup"
     required: false

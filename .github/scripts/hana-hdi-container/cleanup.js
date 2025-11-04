@@ -7,8 +7,8 @@ const url = process.env.INPUT_SERVICE_MANAGER_URL
 
 const AGE = 1000 * 60 * 60 * (parseInt(process.env.INPUT_CLEANUP_AGE_HOURS) || 1)
 
-const contains = process.env.INPUT_CLEANUP_FILTER
-const b_url = url + `/v1/service_bindings${ contains ? `?fieldQuery=name contains '${contains}'` : ''}`
+const contains = process.env.INPUT_INSTANCE_PREFIX + '_ci_'
+const b_url = url + `/v1/service_bindings?fieldQuery=name contains '${contains}_ci_'`
 const b_res = await fetch(b_url, { method: 'GET', headers })
 let { items: bindings } = await b_res.json()
 bindings = bindings.filter(b => Date.now() - new Date(b.created_at) > AGE)

@@ -12,7 +12,7 @@ const headers = { authorization: `Bearer ${token}`, 'content-type': 'application
 const url = process.env.INPUT_SERVICE_MANAGER_URL
 
 const i_url = url + '/v1/service_instances'
-const instancePrefix = process.env.INPUT_INSTANCE_PREFIX || 'ci'
+const instancePrefix = process.env.INPUT_INSTANCE_PREFIX
 const i_name = `${instancePrefix}_ci_${Math.random().toString(36).substring(2, 15)}`
 const servicePlanId = process.env.INPUT_SERVICE_PLAN_ID
 const i_options = {
