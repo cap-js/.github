@@ -28,16 +28,16 @@ runs:
       run: node ${{ github.action_path }}/../../scripts/hana-hdi-container/cleanup.js
       shell: bash
       env:
-        INPUT_CLEANUP_FILTER: ${{ inputs.cleanup-filter }}
-        INPUT_CLEANUP_AGE_HOURS: ${{ inputs.cleanup-age-hours }}
-        INPUT_SERVICE_MANAGER_URL: ${{ inputs.service-manager-url }}
         INPUT_AUTH_URL: ${{ inputs.auth-url }}
+        INPUT_SERVICE_MANAGER_URL: ${{ inputs.service-manager-url }}
+        INPUT_CLEANUP_AGE_HOURS: ${{ inputs.cleanup-age-hours }}
+        INPUT_INSTANCE_PREFIX: ${{ inputs.instance-prefix }}
     - name: Setup new instance
       run: node ${{ github.action_path }}/../../scripts/hana-hdi-container/setup.js
       shell: bash
       env:
-        INPUT_INSTANCE_PREFIX: ${{ inputs.instance-prefix }}
-        INPUT_CONFIG_PATH: ${{ inputs.config-path }}
-        INPUT_SERVICE_PLAN_ID: ${{ inputs.service-plan-id }}
-        INPUT_SERVICE_MANAGER_URL: ${{ inputs.service-manager-url }}
         INPUT_AUTH_URL: ${{ inputs.auth-url }}
+        INPUT_SERVICE_MANAGER_URL: ${{ inputs.service-manager-url }}
+        INPUT_INSTANCE_PREFIX: ${{ inputs.instance-prefix }}
+        INPUT_SERVICE_PLAN_ID: ${{ inputs.service-plan-id }}
+        INPUT_CONFIG_PATH: ${{ inputs.config-path }}
