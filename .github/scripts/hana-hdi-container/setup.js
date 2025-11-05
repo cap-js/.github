@@ -61,6 +61,8 @@ const { credentials } = await res.json()
 const configPath = process.env.INPUT_CONFIG_PATH || ''
 const cdsrc = path_join(process.cwd(), configPath, '.cdsrc.json')
 writeFileSync(cdsrc, JSON.stringify({ requires: { db: { kind: 'hana', credentials } } }, null, 2))
+console.log(`>>> Wrote .cdsrc.json to ${cdsrc}`)
 
 const vcap = path_join(process.cwd(), configPath, 'vcap.json')
 writeFileSync(vcap, JSON.stringify({ VCAP_SERVICES: { hana: [{ tags: ['hana'], credentials }] } }, null, 2))
+console.log(`>>> Wrote vcap.json to ${vcap}`)
