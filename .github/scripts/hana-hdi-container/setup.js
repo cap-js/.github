@@ -64,5 +64,3 @@ writeFileSync(cdsrc, JSON.stringify({ requires: { db: { kind: 'hana', credential
 
 const vcap = path_join(process.cwd(), configPath, 'vcap.json')
 writeFileSync(vcap, JSON.stringify({ VCAP_SERVICES: { hana: [{ tags: ['hana'], credentials }] } }, null, 2))
-
-console.log(`>>> setup completed`)
