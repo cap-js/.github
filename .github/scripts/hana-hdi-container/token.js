@@ -1,12 +1,12 @@
 import { URLSearchParams } from 'url'
 
 const fetch_token = async () => {
-  const url = process.env.INPUT_AUTH_URL
+  const url = process.env.INPUT_SERVICE_MANAGER_AUTH_URL
 
   const encodedParams = new URLSearchParams()
   encodedParams.set('grant_type', 'client_credentials')
-  encodedParams.set('client_id', process.env.SM_CLIENT_ID)
-  encodedParams.set('client_secret', process.env.SM_CLIENT_SECRET)
+  encodedParams.set('client_id', process.env.INPUT_SERVICE_MANAGER_CLIENT_ID)
+  encodedParams.set('client_secret', process.env.INPUT_SERVICE_MANAGER_CLIENT_SECRET)
 
   const options = {
     method: 'POST',

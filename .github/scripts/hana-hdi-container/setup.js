@@ -12,9 +12,9 @@ const headers = { authorization: `Bearer ${token}`, 'content-type': 'application
 const url = process.env.INPUT_SERVICE_MANAGER_URL
 
 const i_url = url + '/v1/service_instances'
-const instancePrefix = process.env.INPUT_INSTANCE_PREFIX
-const i_name = `${instancePrefix}_ci_${Math.random().toString(36).substring(2, 15)}`
-const servicePlanId = process.env.INPUT_SERVICE_PLAN_ID
+const prefix = process.env.INPUT_INSTANCE_PREFIX + '_ci_'
+const i_name = `${prefix}${Math.random().toString(36).substring(2, 15)}`
+const servicePlanId = process.env.INPUT_HANA_PLAN_ID
 const i_options = {
   method: 'POST',
   headers,
@@ -61,6 +61,8 @@ const { credentials } = await res.json()
 const configPath = process.env.INPUT_CONFIG_PATH || ''
 const cdsrc = path_join(process.cwd(), configPath, '.cdsrc.json')
 writeFileSync(cdsrc, JSON.stringify({ requires: { db: { kind: 'hana', credentials } } }, null, 2))
+console.log(`>>> Wrote .cdsrc.json to ${cdsrc}`)
 
 const vcap = path_join(process.cwd(), configPath, 'vcap.json')
 writeFileSync(vcap, JSON.stringify({ VCAP_SERVICES: { hana: [{ tags: ['hana'], credentials }] } }, null, 2))
+console.log(`>>> Wrote vcap.json to ${vcap}`)
