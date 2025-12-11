@@ -85,8 +85,6 @@ jobs:
 
       - name: Publish to npm
         run: npm publish --tag $INPUTS_TAG --access public --provenance --dry-run $INPUTS_DRY_RUN
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
       - name: Get Version
         id: get-version
