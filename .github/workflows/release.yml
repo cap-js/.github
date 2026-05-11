@@ -93,7 +93,7 @@ jobs:
 
       - name: Parse CHANGELOG.md
         id: parse-changelog
-        uses: schwma/parse-changelog-action@v1.0.0
+        uses: schwma/parse-changelog-action@v1.2.0
         with:
           version: '${{ steps.get-version.outputs.version }}'
           title-regex: '^##\s+\[\d.*$'
