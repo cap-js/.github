@@ -2,7 +2,7 @@ import { promisify } from 'node:util'
 const sleep = promisify(setTimeout)
 
 import { join as path_join } from 'node:path'
-import { writeFileSync } from 'node:fs'
+import { writeFileSync, readFileSync, existsSync } from 'node:fs'
 
 import { fetch_token } from './token.js'
 
@@ -60,7 +60,19 @@ const { credentials } = await res.json()
 
 const configPath = process.env.INPUT_CONFIG_PATH || ''
 const cdsrc = path_join(process.cwd(), configPath, '.cdsrc.json')
-writeFileSync(cdsrc, JSON.stringify({ requires: { db: { kind: 'hana', credentials } } }, null, 2))
+// Shallow-merge so that repo-defined profile blocks (e.g. "[metrics]",
+// "[logging]", "[tracing-attributes]") and sibling top-level requires
+// (messaging, telemetry, queue, ...) survive. `requires.db` is replaced —
+// that is the intended override.
+const existing = existsSync(cdsrc) ? JSON.parse(readFileSync(cdsrc, 'utf8')) : {}
+const merged = {
+  ...existing,
+  requires: {
+    ...(existing.requires ?? {}),
+    db: { kind: 'hana', credentials }
+  }
+}
+writeFileSync(cdsrc, JSON.stringify(merged, null, 2))
 console.log(`>>> Wrote .cdsrc.json to ${cdsrc}`)
 
 const vcap = path_join(process.cwd(), configPath, 'vcap.json')
